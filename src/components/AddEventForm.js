@@ -45,6 +45,7 @@ function AddEventForm(props) {
   const [venue, setVenue] = useState("");
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [error, setError] = useState(null);
 
   const { classes } = props;
 
@@ -62,6 +63,7 @@ function AddEventForm(props) {
     setVenue("");
     setPrice(0);
     setDiscount(0);
+    setError(null);
   };
   return (
     <div style={containerStyle(props.width)}>
@@ -121,6 +123,11 @@ function AddEventForm(props) {
           className={classes.inputField}
           color="secondary"
         />
+        {error !== "" ? (
+          <Typography variant="subtitle2" style={{ color: "green" }}>
+            {error}
+          </Typography>
+        ) : null}
         <div className={classes.buttonContainer}>
           <Button
             variant="outlined"
@@ -129,6 +136,14 @@ function AddEventForm(props) {
               if (name !== "" && description !== "" && venue !== "") {
                 clearFields();
                 props.addEvent(eventInfo);
+              } else {
+                let errorMsg =
+                  "Please enter " +
+                  (name === "" ? "name" : "") +
+                  (description === "" ? " ,description" : "") +
+                  (venue === "" ? " ,venue" : "") +
+                  ".";
+                setError(errorMsg);
               }
             }}
             className={classes.button}
